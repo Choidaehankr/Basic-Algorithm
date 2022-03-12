@@ -1,0 +1,280 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+//게시판 불량 이용자를 신고하고 처리 결과를 메일로 발송
+// 1. 한 번에 한명의 유저 신고
+// 1-1: 신고 횟수에 제한 없음. 서로 다른 유저 계속 신고 가능
+// 1-2: 한 유저를 여러번 신고 가능. 한 유저가 동일한 유저에 대한 다중 신고
+// 횟수는 1회로 처리
+
+//2. k번 이상 신고된 유저는 즉시 게시판 이용 정지. 이 사실을 신고한 모든 유저에게 메일 발송
+//2-1: 정지된 유저도 신고 가능
+
+
+vector<int> solution(vector<string> id_list, vector<string> report, int k) {
+    vector<int> answer;
+    vector<pair<string, int>> getMail; //ID별 신고당한 횟수
+    vector<pair<string, int>> reportCnt;
+    vector<string> ban; //정지된 ID
+    vector<int> reportCnt; // 신고한 횟수
+    vector<int> banCnt; //신고 당한 횟수
+    
+    for (int i = 0; i < id_list.size(); i++) {
+        string id = id_list[i];
+        bool findSpace = false;
+        for (int j = 0; j < report.size(); j++) {
+            string user; //신고자
+            string getReport; //신고 당한 자
+            for (int k = 0; k < report[j].size(); k++) {
+                if (report[i][j] == ' ') {
+                    findSpace = true;
+                }
+                if (!findSpace) user += report[i][j];
+                else getReport += report[i][j];
+                //신고자와 신고당한자가 담김
+            }
+            if (user == id) {
+                
+            }
+        }
+    }
+
+    return answer;
+}
+
+int main() {
+    vector<string> id;
+    vector<string> report;
+    vector<int> result;
+    int n, m, k;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        string str; cin >> str;
+        id.push_back(str);
+    }
+    cin >> m;
+    for (int i = 0; i < m; i++) {
+        string str; getline(cin, str);
+        report.push_back(str);
+    }
+    cin >> k;
+    result = solution(id, report, k);
+    for (int i = 0; i < result.size(); i++) {
+        cout << result[i] << ' ';
+    }
+}
+
+
+----------------------------
+
+
+0P0 처럼 소수 양 쪽에 0이 있는 경우
+P0 처럼 소수 오른쪽에만 0이 있고 왼쪽에는 아무것도 없는 경우
+0P 처럼 소수 왼쪽에만 0이 있고 오른쪽에는 아무것도 없는 경우
+P 처럼 소수 양쪽에 아무것도 없는 경우
+단, P는 각 자릿수에 0을 포함하지 않는 소수입니다.
+예를 들어, 101은 P가 될 수 없습니다.
+
+211020101011
+
+211, 2, 11이 있으며, 총 3개입니다. 211은 P0 형태에서 찾을 수 있으며, 2는 0P0에서, 11은 0P에서 찾을 수 있습니다.
+
+110011
+
+
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+//소수 조건을 만족하는 것을 모두 찾은 후, 한 번에 모아서 소수인지 검사한다. (0을 포함하는지)
+queue<char> q;
+string conv(int n, int k) {
+    string str, tmp;
+    while (n > 0) {
+        if (n % k < 10) {
+            str.push_back(n % k + 48);
+        }
+        else {
+            str.push_back(n % k + 55);
+        }
+        n /= k;
+    }
+    for (int i = str.size() - 1; i >= 0; i--) {
+        tmp += str[i];
+    }
+    return tmp;
+}
+int solution(int n, int k) {
+    vector<string> v;
+    int answer = -1;
+    bool state = false;
+    string str = conv(n, k);
+    string tmp;
+    
+    for (int i = 0; i < str.size(); i++) {       
+        char c = ' ';
+        if (str[i] != '0' && c != '0') {
+            tmp += str[i];
+        }
+        else {
+            if (tmp != "") {
+                v.push_back(tmp);
+            }
+            tmp.clear();
+        }
+        c = str[i];
+    }
+    if(tmp!="") v.push_back(tmp);
+    for (int i = 0; i < v.size(); i++) {
+        //if (v[i] != "1" || v[i].size() < 1
+        //cout << "v[" << i << "] is " << v[i] << endl;
+        if (v[i].size() >= 1) {
+            if (v[i] == "1" && i != v.size()-1) {
+                answer--;
+            }
+            answer++;
+        }
+    }
+
+    return answer+1;
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    cout << solution(n, k);
+}
+
+
+
+
+
+
+
+
+------------------------------------
+기본 시간(분): 180
+기본 요금(원): 5000
+단위 시간(분): 10
+단위 요금(원): 600
+
+05:34	5961	입차
+06:00	0000	입차
+06:34	0000	출차
+07:59	5961	출차
+07:59	0148	입차
+18:59	0000	입차
+19:09	0148	출차
+22:59	5961	입차
+23:00	5961	출차
+
+4 9
+180 5000 10 600 05:34 5961 IN
+06:00 0000 IN
+06:34 0000 OUT
+07:59 5961 OUT
+07:59 0148 IN
+18:59 0000 IN
+19:09 0148 OUT
+22:59 5961 IN
+23:00 5961 OUT
+
+
+
+
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+#include <vector>
+#include <queue>
+//#include <cstring>
+
+using namespace std;
+priority_queue<pair<pair<int, string>, string>, vector < pair<pair<int, string>, string>, greater <pair<pair<int, string>, string>>>> pq;
+
+//시각-차량 번호-행동 순으로 입력
+//우선 차량 별 머문 시간만 계산하면 됨
+//IN횟수가 OUT보다 많다면, 23:59를 기준으로 잡는다
+
+vector<string> split(string s, string divid) {
+    vector<string> v;
+    char* c = strtok((char*)s.c_str(), divid.c_str());
+    while (c) {
+        v.push_back(c);
+        c = strtok(NULL, divid.c_str());
+    }
+    return v;
+}
+
+vector<int> solution(vector<int> fees, vector<string> records) {
+    vector<int> answer;
+    cout << "records size is " << records.size() << endl;
+    for (int i = 0; i < records.size(); i++) {
+       vector<string> v = split(records[i], " ");
+        string time = v[0];
+        int number = stoi(v[1]);
+        string act = v[2];
+        pq.push({ { number, time },act});
+        //pq.top().first = 차 번호
+        //pq.top().second = 시간
+    }
+    vector<pair<int, pair<int, int>>> vect;
+    vector<pair<int, int>> vv(4);
+    string ex = "";
+    while (!pq.empty()) {
+        int number = pq.top().first.first;
+        bool state = true;
+        string time, minute;
+        for (int i = 0; i < pq.top().first.second.size(); i++) {
+            char c = pq.top().first.second[i];
+            if (state)
+                time += c;
+            else
+                minute += c;
+            if (c == ':')
+                state = false;
+        }
+        cout <<  number << "is " << stoi(time) << ' ' << stoi(minute) << endl;
+        vect.push_back({ number, { stoi(time), stoi(minute)} });
+        pq.pop();
+    }
+    int exNum = vect[0].first;
+    int j = 0;
+    int index = 0;
+    for (int i = 0; i < vect.size(); i++) {
+        if (exNum != vect[i].first)
+            index++;
+    }
+    //cout << vect.size();
+    return answer;
+}
+
+int main() {
+    vector<int> fees;
+    vector<string> records;
+    vector<int> result;
+    int n, m; cin >> n >> m;
+    for (int i = 0; i < n; i++) {
+        int num; cin >> num;
+        fees.push_back(num);
+    }
+    for (int i = 0; i < m; i++) {
+        string str;
+        getline(cin, str);
+        cout << "str is " << str << endl;
+        records.push_back(str);
+    }
+    result = solution(fees, records);
+    for (int i = 0; i < result.size(); i++) {
+        cout << result[i] << ' ';
+    }
+}

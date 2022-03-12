@@ -1,0 +1,81 @@
+#include iostream
+#include vector
+#include string
+using namespace std;
+
+#define MAX 500000
+
+bool numCheck[MAX];
+
+int main() {
+	vector int card;
+	vector int findCard;
+	int N, M; cin  N;
+	for (int i = 0; i  N; i++) {
+		int num; cin  num;
+		card.push_back(num);
+	}
+	cin  M;
+	for (int i = 0; i  M; i++) {
+		int num; cin  num;
+		findCard.push_back(num);
+	}
+	vector int result;
+	for (int i = 0; i  findCard.size(); i++) {
+		bool state = false;
+		for (int j = 0; j  card.size(); j++) {
+			if (card[j] == findCard[i]) {
+				state = true;
+				continue;
+			}
+		}
+		if (state)
+			result.push_back(1);
+		else
+			result.push_back(0);
+	}
+	for (int i = 0; i  result.size(); i++) {
+		cout  result[i]  ' ';
+	}
+	 시간 초과
+	int N, M;
+	cin  N;
+	for (int i = 0; i  N; i++) {
+		int num; cin  num;
+		numCheck[num] = true;
+	}
+	cin  M;
+	vector int result;
+	for (int i = 0; i  M; i++) {
+		int num; cin  num;
+		if (numCheck[num] == true)
+			result.push_back(1);
+		else
+			result.push_back(0);
+	}
+	for (int i = 0; i  result.size(); i++) {
+		cout  result[i]  ' ';
+	}
+	음수 땜에 OutOfBounds;;;
+	int N, M;
+	string str;
+	cin  N;
+	getline(cin, str);
+	cin  M;
+	vector string v;
+	for (int i = 0; i  M; i++) {
+		string s; cin  s;
+		v.push_back(s);
+	}
+	vectorint result;
+	for (int i = 0; i  v.size(); i++) {
+		if (str.find(v[i]) != -1) {
+			result.push_back(1);
+		}
+		else {
+			result.push_back(0);
+		}
+	}
+	for (int i = 0; i  result.size(); i++)
+		cout  result[i]  ' ';
+}
